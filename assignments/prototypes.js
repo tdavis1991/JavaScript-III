@@ -134,3 +134,59 @@ function Humanoid(character) {
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  function Hero(good) {
+    Humanoid.call(this, good);
+    this.attack = function (opp) {
+      if(opp.healthPoints + opp.shield - 10 === 0){
+        return `${opp.name} has been defeated.`;
+      }else{
+        return `${opp.name} has survived your attack.`
+      } 
+    }
+  }
+
+  function Villain(evil) {
+    Humanoid.call(this, evil);
+    this.shield = evil.shield;
+    this.attack = function (opp) {
+      if(opp.healthPoints + opp.shield - 12 === 0){
+        return `${opp.name} has been defeated.`;
+      }else{
+        return `${opp.name} has survived your attack.`
+      } 
+    }
+  }
+
+
+  const siegfried = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 3,
+      height: 5,
+    },
+    healthPoints: 120,
+    shield: 8,
+    name: 'Wrath',
+    team: 'Fire Kingdom',
+    weapons: 'Scythe',
+    language: 'Unknown'
+  });
+
+  const wrath = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 4,
+      height: 8,
+    },
+    healthPoints: 100,
+    shield: 4,
+    name: 'Wrath',
+    team: 'Clover Kingdom',
+    weapons: 'Great sword',
+    language: 'Common tongue'
+  });
+
+  console.log(siegfried);
+  console.log(siegfried.attack(wrath));

@@ -7,7 +7,7 @@
 
 * 3. When using the 'this' keyword for new binding you are normally using it to create a new object from a constructor. The constructor places the values that you pass into using the 'this' keyword and returns a new object with the values assigned to the keys that are in the constructor.
 
-* 4. The explicit bind is used when you are passing an object into a function. Once passed into the function the 'this' keyword will become the object that is being passed. The call, bind and apply method uses explicit binding.
+* 4. The explicit bind is used when you are passing an object into a function. Once passed into the function the 'this' keyword will become the object that is being passed. The call, bind and apply method use explicit binding.
 *
 * write out a code example of each explanation above
 */
@@ -55,16 +55,23 @@ console.log(honda.fit());
 
 // Principle 4
 // code example for Explicit Binding
-function Entertainment(name, price, type) {
-    this.name = name;
-    this.price = price;
-    this.type = type;
+function Entertainment(stuff) {
+    this.name = stuff.name;
+    this.price = stuff.price;
+    this.type = stuff.type;
 };
 
-function Game(name, price, type) {
-    Entertainment.call(this, name, price, type);
+function Game(play) {
+    Entertainment.call(this, play);
     this.category = 'Game';
-    console.log(`${this.name} is a ${this.type} and is currently going for ${this.price} dollars.`);
+    this.about = function() {
+        return `${this.name} is a ${this.type} and is currently going for ${this.price} dollars.`
+    };
 }
 
-console.log(new Game('COD', 60, 'action'));
+const cod = new Game ({
+    name: 'COD',
+    price: 60,
+    type: 'Action'
+});
+console.log(cod.about());
