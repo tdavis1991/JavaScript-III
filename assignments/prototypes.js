@@ -15,6 +15,14 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function GameObject(game) {
+  this.createdAt = game.createdAt;
+  this.name = game.name;
+  this.dimensions = game.dimensions;
+  this.destroy = function() {
+    return `${this.name} was removed from the game.`
+  };  
+};
 
 /*
   === CharacterStats ===
@@ -22,6 +30,15 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+function CharacterStats (stats) {
+  GameObject.call(this, stats);
+  this.healthPoints = stats.healthPoints;
+  this.takeDamage = function() {
+    return `${this.name} took damage.`;
+  };
+};
+
+CharacterStats.prototype = Object.create(GameObject);
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,6 +49,15 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+function Humanoid(character) {
+  CharacterStats.call(this, character);
+  this.team = character.team;
+  this.weapons = character.weapons;
+  this.language = character.language;
+  this.greet = function() {
+    return `${this.name} offers a greeting in ${this.language}`
+  };
+}
  
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -41,7 +67,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,9 +128,65 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  function Hero(good) {
+    Humanoid.call(this, good);
+    this.attack = function (opp) {
+      if(opp.healthPoints + opp.shield - 10 === 0){
+        return `${opp.name} has been defeated.`;
+      }else{
+        return `${opp.name} has survived your attack.`
+      } 
+    }
+  }
+
+  function Villain(evil) {
+    Humanoid.call(this, evil);
+    this.shield = evil.shield;
+    this.attack = function (opp) {
+      if(opp.healthPoints + opp.shield - 12 === 0){
+        return `${opp.name} has been defeated.`;
+      }else{
+        return `${opp.name} has survived your attack.`
+      } 
+    }
+  }
+
+
+  const siegfried = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 3,
+      height: 5,
+    },
+    healthPoints: 120,
+    shield: 8,
+    name: 'Wrath',
+    team: 'Fire Kingdom',
+    weapons: 'Scythe',
+    language: 'Unknown'
+  });
+
+  const wrath = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 4,
+      height: 8,
+    },
+    healthPoints: 100,
+    shield: 4,
+    name: 'Wrath',
+    team: 'Clover Kingdom',
+    weapons: 'Great sword',
+    language: 'Common tongue'
+  });
+
+  console.log(siegfried);
+  console.log(siegfried.attack(wrath));
