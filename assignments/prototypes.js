@@ -31,16 +31,14 @@ function GameObject(game) {
   * should inherit destroy() from GameObject's prototype
 */
 function CharacterStats (stats) {
-  GameObject.call(this, createdAt, name, dimensions);
+  GameObject.call(this, stats);
   this.healthPoints = stats.healthPoints;
-  this.takenDamage = function() {
+  this.takeDamage = function() {
     return `${this.name} took damage.`;
   };
 };
 
-CharacterStats.prototype.destroy = function() {
-  return `${this.name} was removed from the game.`
-};
+CharacterStats.prototype = Object.create(GameObject);
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -52,12 +50,12 @@ CharacterStats.prototype.destroy = function() {
   * should inherit takeDamage() from CharacterStats
 */
 function Humanoid(character) {
-  CharacterStats.call(this, healthPoints);
+  CharacterStats.call(this, character);
   this.team = character.team;
   this.weapons = character.weapons;
   this.language = character.language;
   this.greet = function() {
-    return `this.name offers a greeting in ${this.language}`
+    return `${this.name} offers a greeting in ${this.language}`
   };
 }
  
